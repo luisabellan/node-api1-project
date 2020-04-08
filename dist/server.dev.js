@@ -25,7 +25,14 @@ server.post("/users", function (req, res) {
     name: req.body.name,
     bio: req.body.bio
   });
-  return res.status(201).json(_objectSpread({}, newUser));
+
+  if (!req.body.name || !req.body.bio) {
+    return res.status(500).json({
+      errorMessage: "There was an error while saving the user to the database"
+    });
+  } else {
+    return res.status(201).json(_objectSpread({}, newUser));
+  }
 });
 server.get("/", function (req, res) {
   res.json({
@@ -33,8 +40,14 @@ server.get("/", function (req, res) {
   });
 });
 server.get("/users", function (req, res) {
-  // don't worry about the function implementation yet, just call it.
+  if (!res.body) {
+    return res.status(500).json({
+      errorMessage: "The users information could not be retrieved."
+    });
+  } // don't worry about the function implementation yet, just call it.
   // it's essentially "faking" a real database
+
+
   var users = db.getUsers();
   res.status(200).json(users);
 });
