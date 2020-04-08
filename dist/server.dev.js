@@ -8,6 +8,20 @@ var db = require("./database.js"); // creates our server instance
 var server = express(); // we'll talk about this later, just copy it for now
 
 server.use(express.json());
+server.post("/users", function (req, res) {
+  // we don't want to create a user with an empty name, so check for it
+  if (!req.body.name || !req.body.bio) {
+    return res.status(400).json({
+      errorMessage: "Please provide name and bio for the user."
+    });
+  }
+
+  var newUser = db.createUser({
+    name: req.body.name
+  }); // 201 status code means a resource was successfully created
+
+  res.status(201).json(newUser);
+});
 server.get("/", function (req, res) {
   res.json({
     message: "Working :\)"
@@ -32,20 +46,6 @@ server.get("/users/:id", function (req, res) {
       message: "User not found"
     });
   }
-});
-server.post("/users", function (req, res) {
-  // we don't want to create a user with an empty name, so check for it
-  if (!req.body.name || !req.body.bio) {
-    return res.status(400).json({
-      errorMessage: "Please provide name and bio for the user."
-    });
-  }
-
-  var newUser = db.createUser({
-    name: req.body.name
-  }); // 201 status code means a resource was successfully created
-
-  res.status(201).json(newUser);
 });
 server.put("/users/:id", function (req, res) {
   var user = db.getUserById(req.params.id); // can't update a user that doesn't exist, so make sure it exists first

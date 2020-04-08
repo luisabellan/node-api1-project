@@ -1,3 +1,5 @@
+var express = require("express");
+var app = express();
 
 
 
@@ -19,7 +21,7 @@ function getUserById(id) {
 }
 
 // POST
-function createUser(data) {
+async function createUser(data) {
   const payload = {
     id: String(users.length + 1),
     ...data
