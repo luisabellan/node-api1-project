@@ -8,20 +8,17 @@ const server = express();
 server.use(express.json());
 
 server.post("/users", (req, res) => {
-  // we don't want to create a user with an empty name, so check for it
+
   if (!req.body.name || !req.body.bio) {
-    return res.status(400).json({
-      errorMessage: "Please provide name and bio for the user."
-    });
+    return res.status(400).json({ errorMessage: "Please provide name and bio for the user." })
   }
 
   const newUser = db.createUser({
-    name: req.body.name
+    name: req.body.name,
+    bio: req.body.bio
   });
-
-  // 201 status code means a resource was successfully created
-  res.status(201).json(newUser);
-});
+  return res.status(201).json({ ...newUser });
+})
 
 server.get("/", (req, res) => {
   res.json({ message: "Working :\)" });

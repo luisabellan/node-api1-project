@@ -1,5 +1,11 @@
 "use strict";
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var express = require("express");
 
 var db = require("./database.js"); // creates our server instance
@@ -9,7 +15,6 @@ var server = express(); // we'll talk about this later, just copy it for now
 
 server.use(express.json());
 server.post("/users", function (req, res) {
-  // we don't want to create a user with an empty name, so check for it
   if (!req.body.name || !req.body.bio) {
     return res.status(400).json({
       errorMessage: "Please provide name and bio for the user."
@@ -17,10 +22,10 @@ server.post("/users", function (req, res) {
   }
 
   var newUser = db.createUser({
-    name: req.body.name
-  }); // 201 status code means a resource was successfully created
-
-  res.status(201).json(newUser);
+    name: req.body.name,
+    bio: req.body.bio
+  });
+  return res.status(201).json(_objectSpread({}, newUser));
 });
 server.get("/", function (req, res) {
   res.json({
