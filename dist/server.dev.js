@@ -14,6 +14,7 @@ var db = require("./database.js"); // creates our server instance
 var server = express(); // we'll talk about this later, just copy it for now
 
 server.use(express.json());
+server.use(cors());
 server.post("/users", function (req, res) {
   if (!req.body.name || !req.body.bio) {
     return res.status(400).json({

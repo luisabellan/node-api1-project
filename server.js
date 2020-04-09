@@ -6,6 +6,7 @@ const server = express();
 
 // we'll talk about this later, just copy it for now
 server.use(express.json());
+server.use(cors())
 
 server.post("/users", (req, res) => {
   if (!req.body.name || !req.body.bio) {
