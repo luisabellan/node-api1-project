@@ -36,20 +36,19 @@ server.post("/users", function (req, res) {
 });
 server.get("/", function (req, res) {
   res.json({
-    message: "Working :\)"
+    message: "Working :)"
   });
 });
 server.get("/users", function (req, res) {
-  if (!res.body) {
+  var users = db.getUsers();
+  res.status(200).json(users); // don't worry about the function implementation yet, just call it.
+  // it's essentially "faking" a real database
+
+  if (!users) {
     return res.status(500).json({
       errorMessage: "The users information could not be retrieved."
     });
-  } // don't worry about the function implementation yet, just call it.
-  // it's essentially "faking" a real database
-
-
-  var users = db.getUsers();
-  res.status(200).json(users);
+  }
 });
 server.get("/users/:id", function (req, res) {
   // our route params come into variables with the same name as the param.
@@ -57,11 +56,17 @@ server.get("/users/:id", function (req, res) {
   var userId = req.params.id;
   var user = db.getUserById(userId);
 
-  if (user) {
-    res.json(user);
-  } else {
+  if (!user) {
     res.status(404).json({
-      message: "User not found"
+      message: "The user with the specified ID does not exist."
+    });
+  }
+
+  res.json(user);
+
+  if (!user) {
+    res.status(500).json({
+      errorMessage: "The user information could not be retrieved."
     });
   }
 });
@@ -86,11 +91,17 @@ server["delete"]("/users/:id", function (req, res) {
   if (user) {
     db.deleteUser(user.id); // 204 is just a successful empty response
 
-    res.status(204).end();
+    return res.status(204).end();
   } else {
     res.status(404).json({
-      message: "User not found"
+      message: "The user with the specified ID does not exist."
     });
+
+    if (user.id) {
+      return res.status(500).json({
+        errorMessage: "The user could not be removed"
+      });
+    }
   }
 });
 server.listen(5000, function () {
