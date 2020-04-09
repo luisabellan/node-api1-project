@@ -73,16 +73,30 @@ server.get("/users/:id", function (req, res) {
 server.put("/users/:id", function (req, res) {
   var user = db.getUserById(req.params.id); // can't update a user that doesn't exist, so make sure it exists first
 
-  if (user) {
-    var updatedUser = db.updateUser(user.id, {
-      // use a fallback value if no name is specified, so it doesn't empty the field
-      name: req.body.name || user.name
-    });
-    res.json(updatedUser);
-  } else {
+  if (!user) {
     res.status(404).json({
-      message: "User not found"
+      message: "The user with the specified ID does not exist."
     });
+  }
+
+  if (!req.body.name || !req.body.bio) {
+    res.status(400).json({
+      errorMessage: "Please provide name and bio for the user."
+    });
+  }
+
+  var updatedUser = db.updateUser(user.id, {
+    // use a fallback value if no name is specified, so it doesn't empty the field
+    name: req.body.name || user.name,
+    bio: req.body.bio || user.bio
+  });
+
+  if (updatedUser.name === user.name || updatedUser.bio === user.bio) {
+    res.status(500).json({
+      errorMessage: "The user information could not be modified."
+    });
+  } else {
+    res.status(200).json(updatedUser);
   }
 });
 server["delete"]("/users/:id", function (req, res) {
