@@ -1,11 +1,12 @@
-const express = require("express");
-const db = require("./database.js");
+const express = require("express")
+const db = require("./database.js")
+const cors = require("cors")
 
 // creates our server instance
-const server = express();
+const server = express()
 
 // we'll talk about this later, just copy it for now
-server.use(express.json());
+server.use(express.json())
 server.use(cors())
 
 server.post("/users", (req, res) => {

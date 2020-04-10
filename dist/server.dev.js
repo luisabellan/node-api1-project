@@ -8,7 +8,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var express = require("express");
 
-var db = require("./database.js"); // creates our server instance
+var db = require("./database.js");
+
+var cors = require("cors"); // creates our server instance
 
 
 var server = express(); // we'll talk about this later, just copy it for now
