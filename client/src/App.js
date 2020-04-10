@@ -24,8 +24,8 @@ function App() {
             <Card key={user.id} className="cards">
               {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
               <Card.Body>
-                <Card.Title className="title">{user.name}</Card.Title>
-                <Card.Text>{user.bio}</Card.Text>
+                <Card.Title className="name">{user.name}</Card.Title>
+                <Card.Text className="bio">{user.bio}</Card.Text>
                 <Button variant="primary">Delete</Button>
               </Card.Body>
             </Card>

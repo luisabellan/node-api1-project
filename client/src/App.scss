@@ -41,15 +41,20 @@ body{
 
             }
 
-            .title{
+            .name{
                 display: flex;
                 justify-content: center;
                 align-self: center;
+                color: rgb(168, 113, 10);
+            }
+            .bio{
+                color: rgb(207, 207, 173);
             }
 
             button{
                 display: flex;
                 background-color: green;
+                color: rgb(207, 207, 173);
                 justify-content: center;
                 align-self: center;
                 margin: 0 auto;
