@@ -7,19 +7,24 @@ const usersServer = `http://localhost:5000/users`;
 function Card(props) {
   const [users, setUsers] = useState([]);
 
-  const removeUser = e => {
-    e.preventDefault();
+  async function removeUser (e) {
 
-    axios
+
+      e.preventDefault();
+      await axios
       .delete(`${usersServer}/${props.id}`)
-
+      
       .catch(err => `Houston we have an error: ${err}`);
+      
+      
+      
+      let filteredArray = users.filter(u => u !== e.target.value);
+      setUsers(filteredArray);
+      window.location.reload(true);
+      
 
-    window.location.reload(true);
-
-    let filteredArray = users.filter(u => u !== e.target.value);
-    setUsers(filteredArray);
-  };
+    
+  }
 
   return (
     <>
