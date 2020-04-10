@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Card from "./components/Card/Card"
+import Form from "./components/Form/Form"
 import "./App.scss";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           );
         })}
       </div>
+      <Form />
     </div>
   );
 
