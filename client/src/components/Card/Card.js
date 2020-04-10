@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import BootstrapCard from "react-bootstrap/Card";
 import BootstrapButton from "react-bootstrap/Button";
-const users = `http://localhost:5000/users`;
+const usersServer = `http://localhost:5000/users`;
 
 function Card(props) {
+  const [users, setUsers] = useState([]);
 
-  
+  const removeUser = e => {
+    e.preventDefault();
+
+    axios
+      .delete(`${usersServer}/${props.id}`)
+
+      .catch(err => `Houston we have an error: ${err}`);
+
+    window.location.reload(true);
+
+    let filteredArray = users.filter(u => u !== e.target.value);
+    setUsers(filteredArray);
+  };
 
   return (
     <>
@@ -18,19 +31,9 @@ function Card(props) {
           </BootstrapCard.Title>
           <BootstrapCard.Text className="bio">{props.bio}</BootstrapCard.Text>
           <BootstrapButton
-            onClick={(e) => {
-
-              e.preventDefault()
- 
-                
-                      axios
-                        .delete(`${users}/${props.id}`)
-                        .then(window.location.reload())
-                        .catch(err => `Houston we have an error: ${err}`);
-
-                        
-                   
-                  
+            value={users[props.id - 1]}
+            onClick={e => {
+              removeUser(e);
             }}
             variant="primary"
           >
@@ -40,6 +43,6 @@ function Card(props) {
       </BootstrapCard>
     </>
   );
+}
 
-        }
 export default Card;

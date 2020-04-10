@@ -72,7 +72,7 @@ server.get("/users/:id", (req, res) => {
   }
 });
 
-server.put("/users/:id", (req, res) => {
+ server.put("/users/:id", (req, res) => {
   const user = db.getUserById(req.params.id);
 
   // can't update a user that doesn't exist, so make sure it exists first
@@ -109,8 +109,8 @@ server.put("/users/:id", (req, res) => {
 
 });
 
-server.delete("/users/:id", (req, res) => {
-  const user = db.getUserById(req.params.id);
+  server.delete("/users/:id", (req, res) => {
+  const user =  db.getUserById(req.params.id);
 
   if (user) {
     db.deleteUser(user.id);
