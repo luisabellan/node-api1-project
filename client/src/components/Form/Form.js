@@ -4,42 +4,93 @@ import BootstrapForm from "react-bootstrap/Form";
 import BootstrapButton from "react-bootstrap/Button";
 import "./Form.scss";
 
-const usersServer = `http://localhost:5000/users`;
+const usersServer = `http://localhost:5000/users/`;
 
 function Form(props) {
-  const [users, setUsers] = useState([]);
 
-  async function removeUser(e) {
+  const[users, setUsers] = useState([])
+  
+ 
+  const[nameInput, setNameInput] = useState("")
+  const[bioInput, setBioInput] = useState("")
+  const[userToAdd, setUserToAdd] = useState({
+      name: "",
+      bio: ""
+  })
+  
+
+  async function addUser(e) {
     e.preventDefault();
-    await axios
-      .delete(`${usersServer}/${props.id}`)
+    
+     axios
+      .post(`${usersServer}`, {
+          name: userToAdd.name,
+          bio: userToAdd.bio
+      })
+      .then(res => {
+        console.log(res);
+        setUserToAdd(userToAdd);
+  
+      })
+      
 
       .catch((err) => `Houston we have an error: ${err}`);
+      window.location.reload()
 
-    let filteredArray = users.filter((u) => u !== e.target.value);
-    setUsers(filteredArray);
+  
   }
+const onChangeBio = (e) =>{
+    e.preventDefault()
+    setBioInput(e.target.value)
+    console.log("bio input: ", bioInput)
+
+}
+const onChangeName = (e) => {
+    e.preventDefault()
+    setNameInput(e.target.value)
+    console.log("name input: ", nameInput)
+
+}
+
+  const submitHandler = (e,userToAdd) => {
+      e.preventDefault()
+
+       axios
+        .post(usersServer, userToAdd)
+        .then(res=>{
+            console.log(res)
+            setUserToAdd(userToAdd)
+
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+       // window.location.reload()
+    }
+
+  
+
 
   return (
     <>
-      <BootstrapForm>
+      <BootstrapForm className="form">
         <BootstrapForm.Group controlId="formBasicEmail">
-          <BootstrapForm.Label>Email address</BootstrapForm.Label>
-          <BootstrapForm.Control type="email" placeholder="Enter email" />
-          <BootstrapForm.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </BootstrapForm.Text>
+          <BootstrapForm.Label className="name">Name:</BootstrapForm.Label>
+          <BootstrapForm.Control type="text" onChange={onChangeName} name="name" placeholder="Enter your name" />
+         {/*  <BootstrapForm.Text className="text-muted">
+        
+          </BootstrapForm.Text> */}
         </BootstrapForm.Group>
 
         <BootstrapForm.Group controlId="formBasicPassword">
-          <BootstrapForm.Label>Password</BootstrapForm.Label>
-          <BootstrapForm.Control type="password" placeholder="Password" />
+          <BootstrapForm.Label className="name">Bio:</BootstrapForm.Label>
+          <BootstrapForm.Control type="text" onChange={onChangeBio}  name="bio" placeholder="Enter your bio" />
         </BootstrapForm.Group>
-        <BootstrapForm.Group controlId="formBasicCheckbox">
+   {/*      <BootstrapForm.Group controlId="formBasicCheckbox">
           <BootstrapForm.Check type="checkbox" label="Check me out" />
-        </BootstrapForm.Group>
-        <BootstrapButton variant="primary" type="submit">
-          Submit
+        </BootstrapForm.Group> */}
+        <BootstrapButton onClick={submitHandler} variant="primary" type="submit">
+          Add User
         </BootstrapButton>
       </BootstrapForm>
     </>
