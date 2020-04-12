@@ -9,19 +9,19 @@ const usersServer = `http://localhost:5000/users/`;
 function Form(props) {
 
   const[users, setUsers] = useState([])
-  
- 
+
+
   const[nameInput, setNameInput] = useState("")
   const[bioInput, setBioInput] = useState("")
   const[userToAdd, setUserToAdd] = useState({
       name: "",
       bio: ""
   })
-  
+
 
   async function addUser(e) {
     e.preventDefault();
-    
+
      axios
       .post(`${usersServer}`, {
           name: userToAdd.name,
@@ -30,14 +30,14 @@ function Form(props) {
       .then(res => {
         console.log(res);
         setUserToAdd(userToAdd);
-  
+
       })
-      
+
 
       .catch((err) => `Houston we have an error: ${err}`);
       window.location.reload()
 
-  
+
   }
 const onChangeBio = (e) =>{
     e.preventDefault()
@@ -52,7 +52,7 @@ const onChangeName = (e) => {
 
 }
 
-  const submitHandler = (e,userToAdd) => {
+  const addUser = (e,userToAdd) => {
       e.preventDefault()
 
        axios
@@ -68,7 +68,7 @@ const onChangeName = (e) => {
        // window.location.reload()
     }
 
-  
+
 
 
   return (
@@ -78,7 +78,7 @@ const onChangeName = (e) => {
           <BootstrapForm.Label className="name">Name:</BootstrapForm.Label>
           <BootstrapForm.Control type="text" onChange={onChangeName} name="name" placeholder="Enter your name" />
          {/*  <BootstrapForm.Text className="text-muted">
-        
+
           </BootstrapForm.Text> */}
         </BootstrapForm.Group>
 
@@ -89,7 +89,7 @@ const onChangeName = (e) => {
    {/*      <BootstrapForm.Group controlId="formBasicCheckbox">
           <BootstrapForm.Check type="checkbox" label="Check me out" />
         </BootstrapForm.Group> */}
-        <BootstrapButton onClick={submitHandler} variant="primary" type="submit">
+        <BootstrapButton onClick={addUser} variant="primary" type="submit">
           Add User
         </BootstrapButton>
       </BootstrapForm>
