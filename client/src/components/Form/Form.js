@@ -52,7 +52,7 @@ const onChangeName = (e) => {
 
 }
 
-  const addUser = (e,userToAdd) => {
+  const submitHandler = (e,userToAdd) => {
       e.preventDefault()
 
        axios
