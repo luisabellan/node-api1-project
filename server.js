@@ -1,11 +1,15 @@
-const express = require("express");
-const db = require("./database.js");
+const express = require("express")
+const db = require("./database.js")
+const cors = require("cors")
 
 // creates our server instance
-const server = express();
+const server = express()
 
 // we'll talk about this later, just copy it for now
-server.use(express.json());
+server.use(express.json())
+server.use(cors())
+
+let user = db.users
 
 server.post("/users", (req, res) => {
   if (!req.body.name || !req.body.bio) {
@@ -70,7 +74,7 @@ server.get("/users/:id", (req, res) => {
   }
 });
 
-server.put("/users/:id", (req, res) => {
+ server.put("/users/:id", (req, res) => {
   const user = db.getUserById(req.params.id);
 
   // can't update a user that doesn't exist, so make sure it exists first
@@ -107,9 +111,15 @@ server.put("/users/:id", (req, res) => {
 
 });
 
-server.delete("/users/:id", (req, res) => {
-  const user = db.getUserById(req.params.id);
+  server.delete("/users/:id", (req, res) => {
+    
+    if (!req.params.id) { 
+      res.status(400).send("Your request is missing the user id")
+    }
 
+     
+   const user =  db.getUserById(req.params.id);
+    
   if (user) {
     db.deleteUser(user.id);
     // 204 is just a successful empty response

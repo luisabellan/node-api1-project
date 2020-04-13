@@ -41,7 +41,7 @@ function updateUser(id, data) {
 }
 
 function deleteUser(id) {
-  users = users.filter(u => u.id != id);
+  users =   users.filter(u => u.id != id);
 }
 
 module.exports = {

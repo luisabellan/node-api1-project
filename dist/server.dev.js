@@ -8,12 +8,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var express = require("express");
 
-var db = require("./database.js"); // creates our server instance
+var db = require("./database.js");
+
+var cors = require("cors"); // creates our server instance
 
 
 var server = express(); // we'll talk about this later, just copy it for now
 
 server.use(express.json());
+server.use(cors());
+var user = db.users;
 server.post("/users", function (req, res) {
   if (!req.body.name || !req.body.bio) {
     return res.status(400).json({
@@ -100,6 +104,10 @@ server.put("/users/:id", function (req, res) {
   }
 });
 server["delete"]("/users/:id", function (req, res) {
+  if (!req.params.id) {
+    res.status(400).send("Your request is missing the user id");
+  }
+
   var user = db.getUserById(req.params.id);
 
   if (user) {
