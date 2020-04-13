@@ -9,6 +9,8 @@ const server = express()
 server.use(express.json())
 server.use(cors())
 
+let user = db.users
+
 server.post("/users", (req, res) => {
   if (!req.body.name || !req.body.bio) {
     return res
@@ -110,8 +112,14 @@ server.get("/users/:id", (req, res) => {
 });
 
   server.delete("/users/:id", (req, res) => {
-  const user =  db.getUserById(req.params.id);
+    
+    if (!req.params.id) { 
+      res.status(400).send("Your request is missing the user id")
+    }
 
+     
+   const user =  db.getUserById(req.params.id);
+    
   if (user) {
     db.deleteUser(user.id);
     // 204 is just a successful empty response

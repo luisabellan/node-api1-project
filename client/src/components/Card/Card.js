@@ -1,29 +1,28 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import axios from "axios";
+
 import BootstrapCard from "react-bootstrap/Card";
 import BootstrapButton from "react-bootstrap/Button";
 const usersServer = `http://localhost:5000/users`;
 
 function Card(props) {
-  const [users, setUsers] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [adding, setAdding] = useState(true);
+  const [userToEdit, setUserToEdit] = useState([]);
 
-  async function removeUser (e) {
-
-
-      e.preventDefault();
-      await axios
+  async function removeUser() {
+    await axios
       .delete(`${usersServer}/${props.id}`)
-      
-      .catch(err => `Houston we have an error: ${err}`);
-      
-      
-      
-      let filteredArray = users.filter(u => u !== e.target.value);
-      setUsers(filteredArray);
-      window.location.reload(true);
-      
+      .then(res => {
+        console.log(res);
+        setEditing(false);
+        setUserToEdit({});
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
-    
+   // window.location.reload(true);
   }
 
   return (
@@ -36,9 +35,9 @@ function Card(props) {
           </BootstrapCard.Title>
           <BootstrapCard.Text className="bio">{props.bio}</BootstrapCard.Text>
           <BootstrapButton
-            value={users[props.id - 1]}
             onClick={e => {
-              removeUser(e);
+              e.stopPropagation();
+              removeUser();
             }}
             variant="primary"
           >
