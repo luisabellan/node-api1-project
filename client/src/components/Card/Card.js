@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 import BootstrapCard from "react-bootstrap/Card";
@@ -22,7 +22,7 @@ function Card(props) {
         console.log(err);
       });
 
-   // window.location.reload(true);
+    
   }
 
   return (
