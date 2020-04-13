@@ -17,7 +17,7 @@ function App() {
       .catch(err => `Houston we have an error: ${err}`);
   });
 
-  console.log(users);
+  //console.log(users);
 
   return (
     <div className="App">
