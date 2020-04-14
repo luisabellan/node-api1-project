@@ -11,11 +11,16 @@ function App() {
   
   const[nameInput, setNameInput] = useState("")
   const[bioInput, setBioInput] = useState("")
-  const [adding, setAdding] = useState(false);
+  const [adding, setAdding] = useState(true);
+  const [editing, setEditing] = useState(false);
   const[userToAdd, setUserToAdd] = useState({
       name: "",
       bio: ""
   })
+  const[userToEdit, setUserToEdit] = useState({
+    name: "",
+    bio: ""
+})
 
   async function addUser(e) {
     e.preventDefault();
@@ -39,7 +44,27 @@ function App() {
   }
 
 
+  async function updateUser(e, user) {
+    e.preventDefault();
 
+    
+     axios
+      .put(`${server}/${userToEdit.id}`, {
+          name: userToEdit.name,
+          bio: userToEdit.bio
+      })
+      .then(res => {
+        console.log(res);
+        setUserToEdit(userToEdit);
+
+      })
+
+
+      .catch((err) => `Houston we have an error: ${err}`);
+      // window.location.reload()
+
+
+  }
   useEffect(() => {
     axios
       .get(server)
@@ -70,7 +95,7 @@ function App() {
       <div className="form">
       
       
-        {!adding && (
+        {adding && (
 
       <form className="myForm" onSubmit={addUser}>
           <legend>add user</legend>
@@ -106,6 +131,48 @@ function App() {
         </form>
       )} 
       </div>
+      <div className="form">
+      
+      
+      {!editing && (
+
+    <form className="myForm" onSubmit={updateUser}>
+        <legend>update user</legend>
+        <label>
+          name:
+          <input
+            onChange={e =>
+              setUserToEdit({
+                 ...userToEdit, 
+                name: e.target.value
+              },
+              console.log(userToEdit))}
+            
+            value={userToEdit.user}
+          />
+        </label>
+        <label>
+          bio:
+          <input
+            onChange={e =>
+
+              setUserToEdit({
+                ...userToEdit,
+                 bio: e.target.value
+              },
+              console.log(userToEdit))
+            }
+            value={userToEdit.bio}
+          />
+        </label>
+        <div className="button-row">
+          <button  type="submit">Update</button>
+        </div>
+      </form>
+    )} 
+    </div>
+
+
     </div>
   );
 }
