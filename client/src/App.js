@@ -8,6 +8,8 @@ import "./App.scss";
 function App() {
   const [users, setUsers] = useState([]);
   const server = `http://localhost:5000/users`;
+
+  const [clicked, setClicked] = useState(true)
   
   const[nameInput, setNameInput] = useState("")
   const[bioInput, setBioInput] = useState("")
@@ -44,8 +46,9 @@ function App() {
   }
 
 
-  async function updateUser(e, user) {
+  async function updateUser(e,props, user) {
     e.preventDefault();
+    setUserToEdit(user)
 
     
      axios
@@ -56,12 +59,12 @@ function App() {
       .then(res => {
         console.log(res);
         setUserToEdit(userToEdit);
+        setNameInput(userToEdit.name)
 
       })
 
 
       .catch((err) => `Houston we have an error: ${err}`);
-      // window.location.reload()
 
 
   }
@@ -76,18 +79,19 @@ function App() {
 
   //console.log(users);
 
+
   return (
     <div className="App">
       <div className="cards">
         {users.map(user => {
           return (
-            <Card
+            <Card 
               key={user.id}
               user={user}
               users={users}
-              name=                                                                                                                                                                                                                                                                                                                                                                                                                       {user.name}
               bio={user.bio}
               id={user.id}
+              clicked={clicked}
             />
           );
         })}
@@ -97,10 +101,10 @@ function App() {
       
         {adding && (
 
-      <form className="myForm" onSubmit={addUser}>
+      <form className="myForm add-user-" onSubmit={addUser}>
           <legend>add user</legend>
           <label>
-            user name:
+            name:
             <input
               onChange={e =>
                 setUserToAdd({
@@ -109,7 +113,7 @@ function App() {
                 },
                 console.log(userToAdd))}
               
-              value={userToAdd.user}
+              value={userToAdd.name}
             />
           </label>
           <label>
@@ -134,9 +138,9 @@ function App() {
       <div className="form">
       
       
-      {!editing && (
+      {!editing && clicked && (
 
-    <form className="myForm" onSubmit={updateUser}>
+    <form className="myForm update-user-form" onSubmit={updateUser}>
         <legend>update user</legend>
         <label>
           name:
@@ -148,7 +152,7 @@ function App() {
               },
               console.log(userToEdit))}
             
-            value={userToEdit.user}
+            value={userToEdit.name}
           />
         </label>
         <label>
