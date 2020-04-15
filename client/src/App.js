@@ -46,8 +46,9 @@ function App() {
   }
 
 
-  async function updateUser(e, user) {
+  async function updateUser(e,props, user) {
     e.preventDefault();
+    setUserToEdit(user)
 
     
      axios
@@ -58,6 +59,7 @@ function App() {
       .then(res => {
         console.log(res);
         setUserToEdit(userToEdit);
+        setNameInput(userToEdit.name)
 
       })
 
@@ -99,10 +101,10 @@ function App() {
       
         {adding && (
 
-      <form className="myForm" onSubmit={addUser}>
+      <form className="myForm add-user-" onSubmit={addUser}>
           <legend>add user</legend>
           <label>
-            user name:
+            name:
             <input
               onChange={e =>
                 setUserToAdd({
@@ -111,7 +113,7 @@ function App() {
                 },
                 console.log(userToAdd))}
               
-              value={userToAdd.user}
+              value={userToAdd.name}
             />
           </label>
           <label>
@@ -136,9 +138,9 @@ function App() {
       <div className="form">
       
       
-      {!editing && (
+      {!editing && clicked && (
 
-    <form className="myForm" onSubmit={updateUser}>
+    <form className="myForm update-user-form" onSubmit={updateUser}>
         <legend>update user</legend>
         <label>
           name:
@@ -150,7 +152,7 @@ function App() {
               },
               console.log(userToEdit))}
             
-            value={userToEdit.user}
+            value={userToEdit.name}
           />
         </label>
         <label>
