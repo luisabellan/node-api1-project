@@ -8,6 +8,8 @@ import "./App.scss";
 function App() {
   const [users, setUsers] = useState([]);
   const server = `http://localhost:5000/users`;
+
+  const [clicked, setClicked] = useState(true)
   
   const[nameInput, setNameInput] = useState("")
   const[bioInput, setBioInput] = useState("")
@@ -61,7 +63,6 @@ function App() {
 
 
       .catch((err) => `Houston we have an error: ${err}`);
-      // window.location.reload()
 
 
   }
@@ -76,18 +77,19 @@ function App() {
 
   //console.log(users);
 
+
   return (
     <div className="App">
       <div className="cards">
         {users.map(user => {
           return (
-            <Card
+            <Card 
               key={user.id}
               user={user}
               users={users}
-              name=                                                                                                                                                                                                                                                                                                                                                                                                                       {user.name}
               bio={user.bio}
               id={user.id}
+              clicked={clicked}
             />
           );
         })}

@@ -9,6 +9,7 @@ function Card(props) {
   const [editing, setEditing] = useState(false);
   const [adding, setAdding] = useState(true);
   const [userToEdit, setUserToEdit] = useState([]);
+  const [clicked, setClicked] = useState(false)
 
   async function removeUser() {
     await axios
@@ -25,13 +26,19 @@ function Card(props) {
     
   }
 
+  const action = (e) => {
+    e.preventDefault()
+    setClicked(true)
+    
+  }
+
   return (
-    <>
-      <BootstrapCard key={props.user.id} className="card">
+    
+      <BootstrapCard key={props.user.id} onClick={(e)=>action} className="card">
         {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
         <BootstrapCard.Body>
           <BootstrapCard.Title className="name">
-            {props.name}
+            {props.user.name}
           </BootstrapCard.Title>
           <BootstrapCard.Text className="bio">{props.bio}</BootstrapCard.Text>
           <BootstrapButton
@@ -45,7 +52,7 @@ function Card(props) {
           </BootstrapButton>
         </BootstrapCard.Body>
       </BootstrapCard>
-    </>
+    
   );
 }
 
